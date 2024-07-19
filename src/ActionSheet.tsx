@@ -42,7 +42,6 @@ class ActionSheet extends React.Component<IActionSheetProps> {
   static defaultProps = {
     touchable: true,
     forced: false,
-    message: 'Выберите действие',
     style: {}
   }
 
@@ -140,7 +139,6 @@ class ActionSheet extends React.Component<IActionSheetProps> {
         style={this.props.style}
         onPressAction={onPressAction}
         actions={menuActions}
-        testID={this.props.testID}
       >
         {this.props.children}
       </MenuView>

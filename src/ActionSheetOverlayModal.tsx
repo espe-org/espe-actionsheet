@@ -76,13 +76,17 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
           button.onPress()
         }
       }}
-      style={{
-        borderTopWidth: 1,
-        borderTopColor: AppConfig.borderColor,
-        paddingVertical: 12,
-        flexDirection: 'row',
-        justifyContent: selected !== undefined && selected !== null ? 'space-between' : 'center'
-      }}
+      style={[
+        {
+          paddingVertical: 12,
+          flexDirection: 'row',
+          justifyContent: selected !== undefined && selected !== null ? 'space-between' : 'center'
+        },
+        (index || title) && {
+          borderTopWidth: 1,
+          borderTopColor: AppConfig.borderColor,
+        }
+      ]}
       testID={button.text}
     >
       <View style={{ flex: 1, paddingHorizontal: 12 }}>
@@ -123,48 +127,50 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
           elevation: 32
         }}
       >
-        <View
-          style={{
-            paddingHorizontal: 16,
-            paddingVertical: 10
-          }}
-        >
-          {typeof title === 'object' ? (
-            <>
+        {title ? (
+          <View
+            style={{
+              paddingHorizontal: 16,
+              paddingVertical: 10
+            }}
+          >
+            {typeof title === 'object' ? (
+              <>
+                <Text
+                  style={{
+                    fontSize: 12 * AppConfig.scale,
+                    fontFamily: 'TTNorms-Medium',
+                    color: AppConfig.plainColor,
+                    textAlign: 'center'
+                  }}
+                >
+                  {title.header}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10 * AppConfig.scale,
+                    fontFamily: 'TTNorms-Medium',
+                    color: AppConfig.secondaryColor,
+                    textAlign: 'center'
+                  }}
+                >
+                  {title.text}
+                </Text>
+              </>
+            ) : (
               <Text
                 style={{
                   fontSize: 12 * AppConfig.scale,
-                  fontFamily: 'TTNorms-Medium',
-                  color: AppConfig.plainColor,
+                  // fontFamily: 'TTNorms-Medium',
+                  color: AppConfig.grayColor,
                   textAlign: 'center'
                 }}
               >
-                {title.header}
+                {title}
               </Text>
-              <Text
-                style={{
-                  fontSize: 10 * AppConfig.scale,
-                  fontFamily: 'TTNorms-Medium',
-                  color: AppConfig.secondaryColor,
-                  textAlign: 'center'
-                }}
-              >
-                {title.text}
-              </Text>
-            </>
-          ) : (
-            <Text
-              style={{
-                fontSize: 12 * AppConfig.scale,
-                // fontFamily: 'TTNorms-Medium',
-                color: AppConfig.grayColor,
-                textAlign: 'center'
-              }}
-            >
-              {title}
-            </Text>
-          )}
-        </View>
+            )}
+          </View>
+        ) : null}
 
         {AppConfig.mac && filteredButtons.length < 8 ? (
           <View>
