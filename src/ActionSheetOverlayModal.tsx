@@ -1,152 +1,211 @@
-import ActionSheetOverlayModal from './ActionSheetOverlayModal'
+import DeviceInfo from 'react-native-device-info'
+import Modal from 'react-native-modal'
+import Radio from './Radio'
+import React from 'react'
 import {
   Appearance,
   Platform,
+  ScrollView,
+  Text,
   TouchableOpacity,
   View
 } from 'react-native'
-import { MenuView } from '@react-native-menu/menu'
-import React, { type ReactNode } from 'react'
 
-interface IActionSheetProps {
-  actions: any[];
-  touchable?: boolean;
-  key?: number | string;
-  style?: Record<string, any>;
-  forced?: boolean;
-  message?: string | { header: string; text: string; };
-  testID?: string;
-  forceModal?: boolean;
+interface IActionSheetOverlayModalProps {
+  title: string | { header: string; text: string; };
+  buttons: { text: string; description?: string; onPress: () => void }[];
+  visible: boolean;
+  hide: () => void;
   selected?: number;
-  onLongPress?: () => void;
+  forceModal?: boolean;
   throttled?: boolean;
-  children?: ReactNode | ReactNode[];
-  classicMode?: boolean;
-  menuMode?: boolean;
-  language?: 'ru' | 'en';
   isDarkMode?: boolean;
   mainColor?: string;
 }
 
-class ActionSheet extends React.Component<IActionSheetProps> {
-  AppConfig = {
+const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalProps> = ({ buttons, title, visible, hide, selected, forceModal, throttled, isDarkMode, mainColor }) => {
+  const AppConfig = {
     iOS: Platform.OS === 'ios',
     android: Platform.OS === 'android',
     // @ts-ignore
     mac: Platform.isMacCatalyst,
-    get isPad() {
-      return this.windowWidth > 767 || this.mac;
+    hasNotch: DeviceInfo.hasNotch(),
+    dark: isDarkMode ?? Appearance.getColorScheme() === 'dark',
+    scale: 1,
+    getDeviceId: DeviceInfo.getDeviceId(),
+    get isFaceIDPad() {
+      if (this.getDeviceId.substring(0, 4) === 'iPad') {
+        if (Number(this.getDeviceId.substring(4, 5)) > 7 || Number(this.getDeviceId.substring(4, 6)) > 12) {
+          return true
+        }
+        return false
+      }
+      return false
     },
-    dark: this.props.isDarkMode ?? Appearance.getColorScheme() === 'dark',
+    get mainColor() {
+      return mainColor || (this.dark ? '#87DC84' : '#049A00');
+    },
+    get plainColor() {
+      return this.dark ? 'white' : 'black';
+    },
+    get secondaryColor() {
+      return this.dark ? '#888888' : '#777777'
+    },
+    get grayColor() {
+      return this.dark ? '#BABABA' : '#999999';
+    },
+    get borderColor() {
+      return this.dark ? '#313131' : '#DDDDDD';
+    },
   };
+  
+  const filteredButtons = buttons.filter(item => item)
 
-  static defaultProps = {
-    touchable: true,
-    forced: false,
-    message: 'Выберите действие',
-    style: {}
-  }
-
-  state = {
-    visible: false,
-  }  
-
-  showActionSheet = () => {
-    this.setState({ visible: true })
-  }
-
-  hideActionSheet = () => {
-    this.setState({ visible: false })
-  }
-
-  render() {
-    const actions = this.props.actions.filter(r => r)
-
-    if (!this.props.touchable || !actions.filter(r => r).length) {
-      return (
-        <View style={this.props.style} testID={this.props.testID}>
-          {this.props.children}
-        </View>
-      )
-    }
-
-    if (actions.length === 1 && !this.props.forced) {
-      return (
-        <TouchableOpacity
-          style={this.props.style}
-          onPress={actions[0].onPress}
-          onLongPress={this.props.onLongPress}
-          testID={this.props.testID}
+  const mappedButtons = filteredButtons.map((button, index) => (
+    <TouchableOpacity
+      key={button.text}
+      onPress={() => {
+        if (forceModal) {
+          hide()
+          button.onPress()
+        } else if (throttled) {
+          hide()
+          setTimeout(() => button.onPress(), 100)
+        } else {
+          hide()
+          button.onPress()
+        }
+      }}
+      style={{
+        borderTopWidth: 1,
+        borderTopColor: AppConfig.borderColor,
+        paddingVertical: 12,
+        flexDirection: 'row',
+        justifyContent: selected !== undefined && selected !== null ? 'space-between' : 'center'
+      }}
+      testID={button.text}
+    >
+      <View style={{ flex: 1, paddingHorizontal: 12 }}>
+        <Text
+          style={{
+            fontSize: 17 * AppConfig.scale,
+            // fontFamily: 'TTNorms-Medium',
+            color: AppConfig.plainColor,
+            textAlign: selected !== undefined && selected !== null ? 'left' : 'center'
+          }}
         >
-          {this.props.children}
-        </TouchableOpacity>
-      )
-    }
+          {button.text}
+        </Text>
+        {button.description ? (
+          <Text
+            style={{
+              fontSize: 11 * AppConfig.scale,
+              // fontFamily: 'TTNorms-Regular',
+              color: AppConfig.grayColor,
+              textAlign: selected !== undefined && selected !== null ? 'left' : 'center'
+            }}
+          >
+            {button.description}
+          </Text>
+        ) : null}
+      </View>
+      {selected !== undefined && selected !== null ? <Radio mainColor={AppConfig.mainColor} size={18} checked={selected === index} /> : null}
+    </TouchableOpacity>
+  ))
 
-    if ((this.AppConfig.android || this.props.classicMode) && !this.props.menuMode) {
-      return (
-        <>
-          <TouchableOpacity
-            style={this.props.style}
-            onPress={this.showActionSheet}
-            onLongPress={this.props.onLongPress}
-            testID={this.props.testID}
-            >
-            {this.props.children}
-          </TouchableOpacity>
-          <ActionSheetOverlayModal 
-            buttons={this.props.actions.filter(r => r)}
-            title={this.props.message}
-            visible={this.state.visible}
-            hide={this.hideActionSheet}
-            selected={this.props.selected}
-            forceModal={this.props.forceModal || this.AppConfig.mac}
-            throttled={this.props.throttled}
-            mainColor={this.props.mainColor}
-          />
-        </>
-      )
-    }
-
-    const menuActions = actions.map((a, index) => {
-      const action = {
-        id: index.toString(),
-        title: a.text,
-        subtitle: a.description,
-      }
-
-      // if (this.props.selected) {
-      //   return { ...action, state: this.props.selected === index ? 'on' as const : 'off' as const }
-      // }
-
-      return { ...action, state: this.props.selected === index ? 'on' as const : 'off' as const }
-    })
-
-    const menuTitle = typeof (this.props.message) === 'object' ? this.AppConfig.android ? this.props.message.header : this.props.message.header + ' ' + this.props.message.text : this.props.message
-
-    const onPressAction = e => {
-      const { event } = e.nativeEvent
-
-      if (this.props.throttled) {
-        setTimeout(() => actions[Number(event)].onPress(), 100)
-      } else {
-        actions[Number(event)].onPress()
-      }
-    }
-
-    return (
-      // @ts-ignore
-      <MenuView
-        title={menuTitle}
-        style={this.props.style}
-        onPressAction={onPressAction}
-        actions={menuActions}
-        testID={this.props.testID}
+  const content = (
+    <>
+      <View
+        style={{
+          paddingVertical: 1,
+          borderRadius: AppConfig.android ? 8 : 12,
+          backgroundColor: AppConfig.dark ? '#242424' : 'white',
+          elevation: 32
+        }}
       >
-        {this.props.children}
-      </MenuView>
-    )
-  }
+        <View
+          style={{
+            paddingHorizontal: 16,
+            paddingVertical: 10
+          }}
+        >
+          {typeof title === 'object' ? (
+            <>
+              <Text
+                style={{
+                  fontSize: 12 * AppConfig.scale,
+                  fontFamily: 'TTNorms-Medium',
+                  color: AppConfig.plainColor,
+                  textAlign: 'center'
+                }}
+              >
+                {title.header}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 10 * AppConfig.scale,
+                  fontFamily: 'TTNorms-Medium',
+                  color: AppConfig.secondaryColor,
+                  textAlign: 'center'
+                }}
+              >
+                {title.text}
+              </Text>
+            </>
+          ) : (
+            <Text
+              style={{
+                fontSize: 12 * AppConfig.scale,
+                // fontFamily: 'TTNorms-Medium',
+                color: AppConfig.grayColor,
+                textAlign: 'center'
+              }}
+            >
+              {title}
+            </Text>
+          )}
+        </View>
+
+        {AppConfig.mac && filteredButtons.length < 8 ? (
+          <View>
+            {mappedButtons}
+          </View>
+        ) : (
+          <ScrollView>
+            {mappedButtons}
+          </ScrollView>
+        )}
+      </View>
+    </>
+  )
+
+  return (
+    <View style={{ flex: 1 }}>
+      <Modal
+        animationIn='zoomIn'
+        animationOut='zoomOut'
+        isVisible={visible}
+        useNativeDriver={false}
+        backdropOpacity={0}
+        style={{
+          margin: 28,
+          elevation: 2,
+          marginBottom: (AppConfig.hasNotch || AppConfig.isFaceIDPad || AppConfig.android) ? 20 : 0,
+          width: 200,
+          alignSelf: 'center',
+          justifyContent: 'center',
+          shadowColor: '#111111',
+          shadowOpacity: 0.1,
+          shadowRadius: 40,
+          shadowOffset: { width: 0, height: 0 },
+        }}
+        onBackButtonPress={hide}
+        onBackdropPress={hide}
+      >
+        {content}
+      </Modal>
+    </View>
+  )
 }
 
-export default ActionSheet
+export default ActionSheetOverlayModal
