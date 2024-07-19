@@ -29,24 +29,6 @@ interface IActionSheetProps {
 }
 
 class ActionSheet extends React.Component<IActionSheetProps> {
-   Locale = {
-    locale: {
-      en: {
-        'Выберите действие': 'Select an Option',
-      },
-      ru: {},
-    } as Record<string, Record<string, string>>,
-    getCurrentLocale() {
-      return this.props?.language || 'en';
-    },
-    getItem(text: string, strict?: boolean): string {
-      if (strict) {
-        return this.locale[this.getCurrentLocale()][text];
-      }
-      return this.locale[this.getCurrentLocale()][text] || text;
-    },
-  };
-
   AppConfig = {
     iOS: Platform.OS === 'ios',
     android: Platform.OS === 'android',
@@ -140,7 +122,7 @@ class ActionSheet extends React.Component<IActionSheetProps> {
       return { ...action, state: this.props.selected === index ? 'on' as const : 'off' as const }
     })
 
-    const menuTitle = typeof (this.props.message) === 'object' ? this.AppConfig.android ? this.props.message.header : this.props.message.header + ' ' + this.props.message.text : this.Locale.getItem(this.props.message)
+    const menuTitle = typeof (this.props.message) === 'object' ? this.AppConfig.android ? this.props.message.header : this.props.message.header + ' ' + this.props.message.text : this.props.message
 
     const onPressAction = e => {
       const { event } = e.nativeEvent
