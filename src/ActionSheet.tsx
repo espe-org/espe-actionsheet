@@ -23,7 +23,6 @@ interface IActionSheetProps {
   children?: ReactNode | ReactNode[];
   classicMode?: boolean;
   menuMode?: boolean;
-  language?: 'ru' | 'en';
   isDarkMode?: boolean;
   mainColor?: string;
 }
