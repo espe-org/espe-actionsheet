@@ -1,18 +1,18 @@
-# espe-datepicker
+# espe-actionsheet
 
-custom DatePicker
+custom ActionSheet
 
 ## Installation
 
 ```sh
-npm install espe-datepicker
+npm install espe-actionsheet
 ```
 
 ## Usage
 
 
 ```js
-import { multiply } from 'espe-datepicker';
+import { multiply } from 'espe-actionsheet';
 
 // ...
 

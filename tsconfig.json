@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "espe-datepicker": ["./src/index"]
+      "espe-actionsheet": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

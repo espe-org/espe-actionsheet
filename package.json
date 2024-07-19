@@ -1,7 +1,7 @@
 {
-  "name": "espe-datepicker",
+  "name": "espe-actionsheet",
   "version": "0.9.0",
-  "description": "ESPE DatePicker for React-Native",
+  "description": "ESPE ActionSheet for React-Native",
   "source": "index.tsx",
   "main": "index.tsx",
   "scripts": {
@@ -10,20 +10,20 @@
   },
   "keywords": [
     "react-native",
-    "datepicker",
+    "actionsheet",
     "ios",
     "android"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/espe-org/espe-datepicker.git"
+    "url": "git+https://github.com/espe-org/espe-actionsheet.git"
   },
   "author": "Salavat Iskhakov <salavat@projecto.pro> (https://github.com/espe-org)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/espe-org/espe-datepicker/issues"
+    "url": "https://github.com/espe-org/espe-actionsheet/issues"
   },
-  "homepage": "https://github.com/espe-org/espe-datepicker#readme",
+  "homepage": "https://github.com/espe-org/espe-actionsheet#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -58,6 +58,5 @@
     "react-native-device-info": "11.1.0",
     "react-native-modal": "13.0.1",
     "react-native-vector-icons": "10.1.0",
-    "react-native-wheel-pick": "github:TronNatthakorn/react-native-wheel-pick#3e73a5eee7ec5934e10599d04c31587b1ff36f31"
   }
 }
