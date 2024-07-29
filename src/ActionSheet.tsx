@@ -83,15 +83,13 @@ class ActionSheet extends React.Component<IActionSheetProps> {
 
     if ((this.AppConfig.android || this.props.classicMode) && !this.props.menuMode) {
       return (
-        <>
-          <TouchableOpacity
-            style={this.props.style}
-            onPress={this.showActionSheet}
-            onLongPress={this.props.onLongPress}
-            testID={this.props.testID}
-            >
-            {this.props.children}
-          </TouchableOpacity>
+        <TouchableOpacity
+          style={this.props.style}
+          onPress={this.showActionSheet}
+          onLongPress={this.props.onLongPress}
+          testID={this.props.testID}
+        >
+          {this.props.children}
           <ActionSheetOverlayModal 
             buttons={this.props.actions.filter(r => r)}
             title={this.props.message}
@@ -102,7 +100,7 @@ class ActionSheet extends React.Component<IActionSheetProps> {
             throttled={this.props.throttled}
             mainColor={this.props.mainColor}
           />
-        </>
+        </TouchableOpacity>
       )
     }
 
