@@ -2,14 +2,7 @@ import DeviceInfo from 'react-native-device-info'
 import Modal from 'react-native-modal'
 import Radio from './Radio'
 import React from 'react'
-import {
-  Appearance,
-  Platform,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native'
+import { Appearance, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 interface IActionSheetOverlayModalProps {
   title: string | { header: string; text: string; };
@@ -58,7 +51,7 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
       return this.dark ? '#313131' : '#DDDDDD';
     },
   };
-  
+
   const filteredButtons = buttons.filter(item => item)
 
   const mappedButtons = filteredButtons.map((button, index) => (
@@ -186,31 +179,29 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
   )
 
   return (
-    <View style={{ flex: 1 }}>
-      <Modal
-        animationIn='zoomIn'
-        animationOut='zoomOut'
-        isVisible={visible}
-        useNativeDriver={false}
-        backdropOpacity={0}
-        style={{
-          margin: 28,
-          elevation: 2,
-          marginBottom: (AppConfig.hasNotch || AppConfig.isFaceIDPad || AppConfig.android) ? 20 : 0,
-          width: 200,
-          alignSelf: 'center',
-          justifyContent: 'center',
-          shadowColor: '#111111',
-          shadowOpacity: 0.1,
-          shadowRadius: 40,
-          shadowOffset: { width: 0, height: 0 },
-        }}
-        onBackButtonPress={hide}
-        onBackdropPress={hide}
-      >
-        {content}
-      </Modal>
-    </View>
+    <Modal
+      animationIn='zoomIn'
+      animationOut='zoomOut'
+      isVisible={visible}
+      useNativeDriver={false}
+      backdropOpacity={0}
+      style={{
+        margin: 28,
+        elevation: 2,
+        marginBottom: (AppConfig.hasNotch || AppConfig.isFaceIDPad || AppConfig.android) ? 20 : 0,
+        width: 200,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        shadowColor: '#111111',
+        shadowOpacity: 0.1,
+        shadowRadius: 40,
+        shadowOffset: { width: 0, height: 0 },
+      }}
+      onBackButtonPress={hide}
+      onBackdropPress={hide}
+    >
+      {content}
+    </Modal>
   )
 }
 
