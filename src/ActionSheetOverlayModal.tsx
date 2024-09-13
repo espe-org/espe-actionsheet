@@ -1,7 +1,7 @@
 import DeviceInfo from 'react-native-device-info'
 import Modal from 'react-native-modal'
 import Radio from './Radio'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Appearance, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 interface IActionSheetOverlayModalProps {
@@ -11,12 +11,13 @@ interface IActionSheetOverlayModalProps {
   hide: () => void;
   selected?: number;
   forceModal?: boolean;
+  scrollToIndex?: number;
   throttled?: boolean;
   isDarkMode?: boolean;
   mainColor?: string;
 }
 
-const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalProps> = ({ buttons, title, visible, hide, selected, forceModal, throttled, isDarkMode, mainColor }) => {
+const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalProps> = ({ buttons, title, visible, hide, selected, forceModal, scrollToIndex, throttled, isDarkMode, mainColor }) => {
   const AppConfig = {
     iOS: Platform.OS === 'ios',
     android: Platform.OS === 'android',
@@ -54,6 +55,18 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
 
   const filteredButtons = buttons.filter(item => item)
 
+  const scrollRef = useRef<ScrollView>(null)
+
+  const itemHeight = 44
+
+  useEffect(() => {
+    if (visible && !!scrollToIndex && !!scrollRef?.current) {
+      setTimeout(() => {
+        scrollRef.current.scrollTo({ y: scrollToIndex * itemHeight + 1, animated: false })
+      }, 50)
+    }
+  }, [visible])
+
   const mappedButtons = filteredButtons.map((button, index) => (
     <TouchableOpacity
       key={button.text}
@@ -71,11 +84,12 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
       }}
       style={[
         {
-          paddingVertical: 12,
+          height: itemHeight,
           flexDirection: 'row',
+          alignItems: 'center',
           justifyContent: selected !== undefined && selected !== null ? 'space-between' : 'center'
         },
-        (index || title) && {
+        index && {
           borderTopWidth: 1,
           borderTopColor: AppConfig.borderColor,
         }
@@ -86,7 +100,7 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
         <Text
           style={{
             fontSize: 17 * AppConfig.scale,
-            // fontFamily: 'TTNorms-Medium',
+            fontFamily: 'TTNorms-Medium',
             color: AppConfig.plainColor,
             textAlign: selected !== undefined && selected !== null ? 'left' : 'center'
           }}
@@ -97,7 +111,7 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
           <Text
             style={{
               fontSize: 11 * AppConfig.scale,
-              // fontFamily: 'TTNorms-Regular',
+              fontFamily: 'TTNorms-Regular',
               color: AppConfig.grayColor,
               textAlign: selected !== undefined && selected !== null ? 'left' : 'center'
             }}
@@ -113,18 +127,23 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
   const content = (
     <>
       <View
-        style={{
-          paddingVertical: 1,
-          borderRadius: AppConfig.android ? 8 : 12,
-          backgroundColor: AppConfig.dark ? '#242424' : 'white',
-          elevation: 32
-        }}
+        style={[
+          {
+            paddingVertical: 1,
+            borderRadius: AppConfig.android ? 8 : 12,
+            backgroundColor: AppConfig.dark ? '#242424' : 'white',
+            elevation: 32,
+          },
+          AppConfig.mac ? { maxHeight: 400 } : {}
+        ]}
       >
         {title ? (
           <View
             style={{
               paddingHorizontal: 16,
-              paddingVertical: 10
+              paddingVertical: 10,
+              borderBottomWidth: 1,
+              borderBottomColor: AppConfig.borderColor,
             }}
           >
             {typeof title === 'object' ? (
@@ -154,7 +173,7 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
               <Text
                 style={{
                   fontSize: 12 * AppConfig.scale,
-                  // fontFamily: 'TTNorms-Medium',
+                  fontFamily: 'TTNorms-Medium',
                   color: AppConfig.grayColor,
                   textAlign: 'center'
                 }}
@@ -170,7 +189,7 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
             {mappedButtons}
           </View>
         ) : (
-          <ScrollView>
+          <ScrollView ref={scrollRef}>
             {mappedButtons}
           </ScrollView>
         )}

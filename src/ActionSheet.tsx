@@ -1,10 +1,5 @@
 import ActionSheetOverlayModal from './ActionSheetOverlayModal'
-import {
-  Appearance,
-  Platform,
-  TouchableOpacity,
-  View
-} from 'react-native'
+import { Appearance, Platform, TouchableOpacity, View } from 'react-native'
 import { MenuView } from '@react-native-menu/menu'
 import React, { type ReactNode } from 'react'
 
@@ -23,6 +18,7 @@ interface IActionSheetProps {
   children?: ReactNode | ReactNode[];
   classicMode?: boolean;
   menuMode?: boolean;
+  scrollToIndex?: number;
   isDarkMode?: boolean;
   mainColor?: string;
 }
@@ -47,7 +43,7 @@ class ActionSheet extends React.Component<IActionSheetProps> {
 
   state = {
     visible: false,
-  }  
+  }
 
   showActionSheet = () => {
     this.setState({ visible: true })
@@ -90,13 +86,14 @@ class ActionSheet extends React.Component<IActionSheetProps> {
           testID={this.props.testID}
         >
           {this.props.children}
-          <ActionSheetOverlayModal 
+          <ActionSheetOverlayModal
             buttons={this.props.actions.filter(r => r)}
             title={this.props.message}
             visible={this.state.visible}
             hide={this.hideActionSheet}
             selected={this.props.selected}
             forceModal={this.props.forceModal || this.AppConfig.mac}
+            scrollToIndex={this.props.scrollToIndex}
             throttled={this.props.throttled}
             mainColor={this.props.mainColor}
           />
