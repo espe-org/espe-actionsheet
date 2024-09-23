@@ -99,7 +99,7 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
       <View style={{ flex: 1, paddingHorizontal: 12 }}>
         <Text
           style={{
-            fontSize: 17 * AppConfig.scale,
+            fontSize: 15 * AppConfig.scale,
             fontFamily: 'TTNorms-Medium',
             color: AppConfig.plainColor,
             textAlign: selected !== undefined && selected !== null ? 'left' : 'center'
@@ -133,6 +133,7 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
             borderRadius: AppConfig.android ? 8 : 12,
             backgroundColor: AppConfig.dark ? '#242424' : 'white',
             elevation: 32,
+            width: 280
           },
           AppConfig.mac ? { maxHeight: 400 } : {}
         ]}
