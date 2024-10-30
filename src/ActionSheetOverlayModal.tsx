@@ -133,6 +133,7 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
             borderRadius: AppConfig.android ? 8 : 12,
             backgroundColor: AppConfig.dark ? '#242424' : 'white',
             elevation: 32,
+            alignSelf: 'center',
             width: 280
           },
           AppConfig.mac ? { maxHeight: 400 } : {}
