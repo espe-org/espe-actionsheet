@@ -2,7 +2,7 @@ import DeviceInfo from 'react-native-device-info'
 import Modal from 'react-native-modal'
 import Radio from './Radio'
 import React, { useEffect, useRef } from 'react'
-import { Appearance, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 interface IActionSheetOverlayModalProps {
   title: string | { header: string; text: string; };
@@ -24,7 +24,7 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
     // @ts-ignore
     mac: Platform.isMacCatalyst,
     hasNotch: DeviceInfo.hasNotch(),
-    dark: isDarkMode ?? Appearance.getColorScheme() === 'dark',
+    dark: isDarkMode,
     scale: 1,
     getDeviceId: DeviceInfo.getDeviceId(),
     get isFaceIDPad() {
@@ -37,21 +37,21 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
       return false
     },
     get mainColor() {
-      return mainColor || (this.dark ? '#87DC84' : '#049A00');
+      return mainColor || (this.dark ? '#87DC84' : '#049A00')
     },
     get plainColor() {
-      return this.dark ? 'white' : 'black';
+      return this.dark ? 'white' : 'black'
     },
     get secondaryColor() {
       return this.dark ? '#888888' : '#777777'
     },
     get grayColor() {
-      return this.dark ? '#BABABA' : '#999999';
+      return this.dark ? '#BABABA' : '#999999'
     },
     get borderColor() {
-      return this.dark ? '#313131' : '#DDDDDD';
+      return this.dark ? '#313131' : '#DDDDDD'
     },
-  };
+  }
 
   const filteredButtons = buttons.filter(item => item)
 
@@ -66,6 +66,10 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
       }, 50)
     }
   }, [visible])
+
+  useEffect(() => {
+    AppConfig.dark = isDarkMode
+  }, [isDarkMode])
 
   const mappedButtons = filteredButtons.map((button, index) => (
     <TouchableOpacity
@@ -125,78 +129,76 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
   ))
 
   const content = (
-    <>
-      <View
-        style={[
-          {
-            paddingVertical: 1,
-            borderRadius: AppConfig.android ? 8 : 12,
-            backgroundColor: AppConfig.dark ? '#242424' : 'white',
-            elevation: 32,
-            alignSelf: 'center',
-            width: 280
-          },
-          AppConfig.mac ? { maxHeight: 400 } : {}
-        ]}
-      >
-        {title ? (
-          <View
-            style={{
-              paddingHorizontal: 16,
-              paddingVertical: 10,
-              borderBottomWidth: 1,
-              borderBottomColor: AppConfig.borderColor,
-            }}
-          >
-            {typeof title === 'object' ? (
-              <>
-                <Text
-                  style={{
-                    fontSize: 12 * AppConfig.scale,
-                    fontFamily: 'TTNorms-Medium',
-                    color: AppConfig.plainColor,
-                    textAlign: 'center'
-                  }}
-                >
-                  {title.header}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 10 * AppConfig.scale,
-                    fontFamily: 'TTNorms-Medium',
-                    color: AppConfig.secondaryColor,
-                    textAlign: 'center'
-                  }}
-                >
-                  {title.text}
-                </Text>
-              </>
-            ) : (
+    <View
+      style={[
+        {
+          paddingVertical: 1,
+          borderRadius: AppConfig.android ? 8 : 12,
+          backgroundColor: AppConfig.dark ? '#242424' : 'white',
+          elevation: 32,
+          alignSelf: 'center',
+          width: 280
+        },
+        AppConfig.mac ? { maxHeight: 400 } : {}
+      ]}
+    >
+      {title ? (
+        <View
+          style={{
+            paddingHorizontal: 16,
+            paddingVertical: 10,
+            borderBottomWidth: 1,
+            borderBottomColor: AppConfig.borderColor,
+          }}
+        >
+          {typeof title === 'object' ? (
+            <>
               <Text
                 style={{
                   fontSize: 12 * AppConfig.scale,
                   fontFamily: 'TTNorms-Medium',
-                  color: AppConfig.grayColor,
+                  color: AppConfig.plainColor,
                   textAlign: 'center'
                 }}
               >
-                {title}
+                {title.header}
               </Text>
-            )}
-          </View>
-        ) : null}
+              <Text
+                style={{
+                  fontSize: 10 * AppConfig.scale,
+                  fontFamily: 'TTNorms-Medium',
+                  color: AppConfig.secondaryColor,
+                  textAlign: 'center'
+                }}
+              >
+                {title.text}
+              </Text>
+            </>
+          ) : (
+            <Text
+              style={{
+                fontSize: 12 * AppConfig.scale,
+                fontFamily: 'TTNorms-Medium',
+                color: AppConfig.grayColor,
+                textAlign: 'center'
+              }}
+            >
+              {title}
+            </Text>
+          )}
+        </View>
+      ) : null}
 
-        {AppConfig.mac && filteredButtons.length < 8 ? (
-          <View>
-            {mappedButtons}
-          </View>
-        ) : (
-          <ScrollView ref={scrollRef}>
-            {mappedButtons}
-          </ScrollView>
-        )}
-      </View>
-    </>
+      {AppConfig.mac && filteredButtons.length < 8 ? (
+        <View>
+          {mappedButtons}
+        </View>
+      ) : (
+        <ScrollView ref={scrollRef}>
+          {mappedButtons}
+        </ScrollView>
+      )}
+    </View>
   )
 
   return (

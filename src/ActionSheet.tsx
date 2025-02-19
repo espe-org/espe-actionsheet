@@ -1,6 +1,6 @@
 import ActionSheetOverlayModal from './ActionSheetOverlayModal'
-import { Appearance, Platform, TouchableOpacity, View } from 'react-native'
 import { MenuView } from '@react-native-menu/menu'
+import { Platform, TouchableOpacity, View } from 'react-native'
 import React, { type ReactNode } from 'react'
 
 interface IActionSheetProps {
@@ -30,10 +30,10 @@ class ActionSheet extends React.Component<IActionSheetProps> {
     // @ts-ignore
     mac: Platform.isMacCatalyst,
     get isPad() {
-      return this.windowWidth > 767 || this.mac;
+      return this.windowWidth > 767 || this.mac
     },
-    dark: this.props.isDarkMode ?? Appearance.getColorScheme() === 'dark',
-  };
+    dark: this.props.isDarkMode,
+  }
 
   static defaultProps = {
     touchable: true,
@@ -51,6 +51,12 @@ class ActionSheet extends React.Component<IActionSheetProps> {
 
   hideActionSheet = () => {
     this.setState({ visible: false })
+  }
+
+  componentDidUpdate(prevProps: Readonly<IActionSheetProps>, prevState: Readonly<{}>, snapshot?: any): void {
+    if (prevProps.isDarkMode !== this.props.isDarkMode) {
+      this.AppConfig.dark = this.props.isDarkMode
+    }
   }
 
   render() {
@@ -96,6 +102,7 @@ class ActionSheet extends React.Component<IActionSheetProps> {
             scrollToIndex={this.props.scrollToIndex}
             throttled={this.props.throttled}
             mainColor={this.props.mainColor}
+            isDarkMode={this.props.isDarkMode}
           />
         </TouchableOpacity>
       )
@@ -130,6 +137,7 @@ class ActionSheet extends React.Component<IActionSheetProps> {
     return (
       // @ts-ignore
       <MenuView
+        themeVariant={this.AppConfig.dark ? 'dark' : 'light'}
         title={menuTitle}
         style={this.props.style}
         onPressAction={onPressAction}
