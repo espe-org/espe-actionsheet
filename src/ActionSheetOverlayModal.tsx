@@ -139,7 +139,7 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
           alignSelf: 'center',
           width: 280
         },
-        AppConfig.mac ? { maxHeight: 400 } : {}
+        AppConfig.mac || AppConfig.android ? { maxHeight: 400 } : {}
       ]}
     >
       {title ? (
