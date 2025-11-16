@@ -1,6 +1,5 @@
-import Icon from 'react-native-vector-icons/Feather'
 import React from 'react'
-import { View } from 'react-native'
+import { Image, View } from 'react-native'
 
 interface IRadioProps {
   checked: boolean;
@@ -16,10 +15,9 @@ export default class Radio extends React.Component<IRadioProps> {
 
   render() {
     const icon = this.props.checked ? (
-      <Icon
-        name='check'
-        size={this.props.size}
-        color={this.props.mainColor}
+      <Image
+        source={require('./check.png')}
+        style={{ width: this.props.size, height: this.props.size, tintColor: this.props.mainColor }}
       />
     ) : null
 
