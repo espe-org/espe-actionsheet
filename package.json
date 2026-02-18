@@ -1,46 +1,47 @@
 {
-	"name": "espe-actionsheet",
-	"version": "0.9.1",
-	"description": "ESPE ActionSheet for React-Native",
-	"source": "index.tsx",
-	"main": "index.tsx",
-	"scripts": {
-		"typecheck": "tsc --noEmit"
-	},
-	"keywords": [
-		"react-native",
-		"actionsheet",
-		"ios",
-		"android"
-	],
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/espe-org/espe-actionsheet.git"
-	},
-	"author": "Salavat Iskhakov <salavat@projecto.pro> (https://github.com/espe-org)",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/espe-org/espe-actionsheet/issues"
-	},
-	"homepage": "https://github.com/espe-org/espe-actionsheet#readme",
-	"publishConfig": {
-		"registry": "https://registry.npmjs.org/"
-	},
-	"devDependencies": {
-		"@types/react": "19.0.10",
-		"react": "19.1.0",
-		"react-native": "0.81.2",
-		"typescript": "5.9.3"
-	},
-	"peerDependencies": {
-		"react": "*",
-		"react-native": "*"
-	},
-	"packageManager": "yarn@3.6.4",
-	"dependencies": {
-		"@react-native-menu/menu": "2.0.0",
-		"moment": "2.30.1",
-		"react-native-device-info": "15.0.1",
-		"react-native-modal": "14.0.0-rc.1"
-	}
+  "name": "espe-actionsheet",
+  "version": "2026.1",
+  "description": "ESPE ActionSheet for React-Native",
+  "source": "index.tsx",
+  "main": "index.tsx",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "bump": "node scripts/bump.js"
+  },
+  "keywords": [
+    "react-native",
+    "actionsheet",
+    "ios",
+    "android"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/espe-org/espe-actionsheet.git"
+  },
+  "author": "Salavat Iskhakov <salavat@projecto.pro> (https://github.com/espe-org)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/espe-org/espe-actionsheet/issues"
+  },
+  "homepage": "https://github.com/espe-org/espe-actionsheet#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.10",
+    "react": "19.1.0",
+    "react-native": "0.81.2",
+    "typescript": "5.9.3"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "packageManager": "yarn@3.6.4",
+  "dependencies": {
+    "@react-native-menu/menu": "2.0.0",
+    "moment": "2.30.1",
+    "react-native-device-info": "15.0.1",
+    "react-native-modal": "14.0.0-rc.1"
+  }
 }
