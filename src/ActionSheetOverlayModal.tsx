@@ -15,9 +15,10 @@ interface IActionSheetOverlayModalProps {
   throttled?: boolean;
   isDarkMode?: boolean;
   mainColor?: string;
+  menuTint?: boolean;
 }
 
-const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalProps> = ({ buttons, title, visible, hide, selected, forceModal, scrollToIndex, throttled, isDarkMode, mainColor }) => {
+const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalProps> = ({ buttons, title, visible, hide, selected, forceModal, scrollToIndex, throttled, isDarkMode, mainColor, menuTint }) => {
   const AppConfig = {
     iOS: Platform.OS === 'ios',
     android: Platform.OS === 'android',
@@ -105,7 +106,9 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
           style={{
             fontSize: 15 * AppConfig.scale,
             fontFamily: 'TTNorms-Medium',
-            color: AppConfig.plainColor,
+            color: menuTint
+              ? AppConfig.mainColor
+              : AppConfig.plainColor,
             textAlign: selected !== undefined && selected !== null ? 'left' : 'center'
           }}
         >
@@ -116,7 +119,9 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
             style={{
               fontSize: 11 * AppConfig.scale,
               fontFamily: 'TTNorms-Regular',
-              color: AppConfig.grayColor,
+              color: menuTint
+                ? AppConfig.mainColor
+                : AppConfig.grayColor,
               textAlign: selected !== undefined && selected !== null ? 'left' : 'center'
             }}
           >

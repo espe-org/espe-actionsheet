@@ -21,6 +21,7 @@ interface IActionSheetProps {
   scrollToIndex?: number;
   isDarkMode?: boolean;
   mainColor?: string;
+  menuTint?: boolean;
 }
 
 class ActionSheet extends React.Component<IActionSheetProps> {
@@ -102,6 +103,7 @@ class ActionSheet extends React.Component<IActionSheetProps> {
             scrollToIndex={this.props.scrollToIndex}
             throttled={this.props.throttled}
             mainColor={this.props.mainColor}
+            menuTint={this.props.menuTint}
             isDarkMode={this.props.isDarkMode}
           />
         </TouchableOpacity>
