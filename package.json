@@ -1,6 +1,6 @@
 {
 	"name": "espe-actionsheet",
-	"version": "2026.1.2",
+	"version": "2026.1.3",
 	"description": "ESPE ActionSheet for React-Native",
 	"source": "index.tsx",
 	"main": "index.tsx",
