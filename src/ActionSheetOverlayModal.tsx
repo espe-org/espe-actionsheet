@@ -56,7 +56,7 @@ const ActionSheetOverlayModal: React.FunctionComponent<IActionSheetOverlayModalP
 
   const filteredButtons = buttons.filter(item => item)
 
-  const scrollRef = useRef<ScrollView>(null)
+  const scrollRef = useRef<React.ComponentRef<typeof ScrollView>>(null)
 
   const itemHeight = 44
 
