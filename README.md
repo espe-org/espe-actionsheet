@@ -5,8 +5,11 @@ custom ActionSheet
 ## Installation
 
 ```sh
-npm install espe-actionsheet
+npm install espe-actionsheet @react-native-menu/menu react-native-device-info react-native-modal
 ```
+
+These are peer dependencies: the app must provide a single copy of each. A private copy of a
+native module, or of moment, which holds the registered locales, breaks the app at runtime.
 
 ## Usage
 
